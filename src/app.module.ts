@@ -4,9 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      envFilePath: `./.env`,
-    }),
+    ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
       useFactory: () => ({
         type: process.env.TYPEORM_CONNECTION as any,
@@ -15,10 +13,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         username: process.env.TYPEORM_USERNAME,
         password: process.env.TYPEORM_PASSWORD,
         database: process.env.TYPEORM_DATABASE,
-        entities: [__dirname + '/../infra/models/**/*.model{.ts,.js}'],
-        migrations: [__dirname + '/../src/infra/migrations/**/*{.ts,.js}'],
-        migrationsTableName: 'migrations_typeorm',
-        synchronize: true,
+        entities: [process.env.TYPEORM_ENTITIES],
+        migrations: [process.env.TYPEORM_MIGRATIONS],
+        cli: {
+          migrationsDir: './infra/migrations',
+        },
       }),
     }),
   ],
