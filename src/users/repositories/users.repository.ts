@@ -18,4 +18,8 @@ export class UsersRepository {
       throw new Error("Could not create a new user!")
     }
   }
+
+  async list(): Promise<User[]> {
+    return await this.userRepository.find();
+  }
 }

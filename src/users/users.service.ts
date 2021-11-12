@@ -1,15 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { UsersRepository } from 'src/infra/repositories/users.repository';
+import { UsersRepository } from 'src/users/repositories/users.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 import { hash } from 'bcrypt';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly userRepository: UsersRepository) {}
 
-  async create({ name, email, password }: CreateUserDto) {
+  async create({ name, email, password }: CreateUserDto): Promise<void> {
     const passwordHash = await hash(password, 10);
     await this.userRepository.create({
       name,
@@ -18,8 +19,8 @@ export class UsersService {
     });
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll(): Promise<User[]> {
+    return await this.userRepository.list();
   }
 
   findOne(id: number) {
