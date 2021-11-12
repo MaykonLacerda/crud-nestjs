@@ -16,7 +16,7 @@ export class CreateUsers1636656035869 implements MigrationInterface {
             type: 'varchar',
           },
           {
-            name: 'username',
+            name: 'email',
             type: 'varchar',
           },
           {
@@ -24,8 +24,9 @@ export class CreateUsers1636656035869 implements MigrationInterface {
             type: 'varchar',
           },
           {
-            name: 'email',
-            type: 'varchar',
+            name: 'createdAt',
+            type: 'timestamp',
+            default: 'now()',
           },
         ],
       }),
