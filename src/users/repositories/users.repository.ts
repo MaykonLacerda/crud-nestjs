@@ -1,7 +1,8 @@
 /* eslint-disable prettier/prettier */
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { UpdateUserDto } from '../dto/update-user.dto';
 
 export class UsersRepository {
   constructor(
@@ -14,12 +15,24 @@ export class UsersRepository {
       const newUser = this.userRepository.create({name, email, password});
       await this.userRepository.save(newUser);
     } catch (error) {
-      console.log(error.message);
+      console.error(error.message);
       throw new Error("Could not create a new user!")
     }
   }
 
   async list(): Promise<User[]> {
     return await this.userRepository.find();
+  }
+
+  async findById(id: string): Promise<User> {
+    return await this.userRepository.findOne(id);
+  }
+
+  async update(id: string, data: UpdateUserDto): Promise<UpdateResult> {
+    return await this.userRepository.update({id}, data);
+  }
+
+  async delete(id: string): Promise<DeleteResult> {
+    return await this.userRepository.delete(id);
   }
 }
